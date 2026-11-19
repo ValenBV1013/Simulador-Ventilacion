@@ -6,7 +6,7 @@ app = FastAPI(title="API Simulador de Ventilación")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["http://localhost:3000", "https://simulador-ventilacion.vercel.app"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
