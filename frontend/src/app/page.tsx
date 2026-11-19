@@ -438,7 +438,7 @@ export default function Home() {
           
           <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
             <p>© {new Date().getFullYear()} TermoVent. Todos los derechos reservados.</p>
-            <p>Proyecto de Física e Ingeniería - Next.js & FastAPI.</p>
+            <p suppressHydrationWarning>© {new Date().getFullYear()} TermoVent. Todos los derechos reservados.</p>
           </div>
         </footer>
       </main>
