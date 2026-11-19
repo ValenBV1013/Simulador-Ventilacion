@@ -1,34 +1,13 @@
 'use client';
-
-// ============================================================================
-// PÁGINA PRINCIPAL - TERMOVENT
-// ============================================================================
-// Esta es la landing page del proyecto. Incluye el Hero, el simulador,
-// la sección de normativas, sobre nosotros (con el texto del SENA),
-// aplicaciones prácticas, reseñas, FAQ, contacto y footer.
-// ============================================================================
-
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-
-// Componentes internos
 import FormularioRecinto from '@/components/FormularioRecinto';
 import Header from '@/components/Header';
 import Loader from '@/components/Loader';
 import GasParticles from '@/components/GasParticles';
+import { ArrowRight, Activity, ShieldCheck, Thermometer, Waves, Star, Quote, Info, Flame, Droplets, Zap, Wind, CheckCircle, Gauge, Beaker, MapPin, Mail, Phone, Send } from 'lucide-react';
 
-// Iconos
-import { 
-  ArrowRight, Activity, ShieldCheck, Thermometer, Waves, 
-  Star, Quote, Info, Flame, Droplets, Zap, Wind, CheckCircle, 
-  Gauge, Beaker, MapPin, Mail, Phone, Send 
-} from 'lucide-react';
-
-// ============================================================================
-// DATOS ESTÁTICOS
-// ============================================================================
-
-// Testimonios para el carrusel infinito
+// Datos de los testimonios
 const TESTIMONIOS = [
   { name: "Ing. Carlos R.", role: "Especialista en Gas", text: "Esta herramienta es exactamente lo que necesitábamos para dimensionar la ventilación. Los cálculos son exactos." },
   { name: "Arq. Laura M.", role: "Diseñadora Residencial", text: "El cálculo termodinámico es preciso. Me ayuda a justificar las rejillas de ventilación en los planos de los clientes." },
@@ -37,38 +16,23 @@ const TESTIMONIOS = [
   { name: "Jorge M.", role: "Contratista", text: "Lo uso en cada obra que hago. Me ahorra tiempo calculando el área de las rejillas y me da un sustento técnico." }
 ];
 
-// ============================================================================
-// COMPONENTE PRINCIPAL
-// ============================================================================
-
 export default function Home() {
-  // Estado para el Loader inicial
   const [loading, setLoading] = useState(true);
-  // Estado para el año actual sin romper el prerrender con cacheComponents
-  const [currentYear, setCurrentYear] = useState<number>(2026);
 
-  // Simulamos una carga de 1.5 segundos al entrar
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
-
   return (
     <>
-      {/* Pantalla de Carga */}
       <AnimatePresence>
         {loading && <Loader />}
       </AnimatePresence>
 
       <main className="min-h-screen bg-bg-light dark:bg-bg-dark text-slate-800 dark:text-slate-200 font-sans selection:bg-accent-light selection:text-white transition-colors duration-300 relative overflow-hidden">
         
-        {/* ------------------------------------------------------------------
-            EFECTOS DE FONDO
-            ------------------------------------------------------------------ */}
+        {/* Efectos de fondo */}
         <GasParticles />
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-[0.03] dark:opacity-[0.05]">
           <div className="absolute top-[10%] left-[5%] text-6xl font-mono text-slate-900 dark:text-white rotate-12">PV = nRT</div>
@@ -76,12 +40,9 @@ export default function Home() {
           <div className="absolute bottom-[20%] left-[20%] text-7xl font-mono text-slate-900 dark:text-white rotate-6">Q = mcΔT</div>
         </div>
 
-        {/* Header (Navegación) */}
         <Header />
 
-        {/* ------------------------------------------------------------------
-1. HERO SECTION
-            ------------------------------------------------------------------ */}
+        {/* 1. HERO SECTION */}
         <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center justify-center z-10">
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-10 dark:opacity-20 mix-blend-luminosity" />
           <div className="absolute inset-0 bg-gradient-to-t from-bg-light via-bg-light/80 to-transparent dark:from-bg-dark dark:via-bg-dark/80" />
@@ -106,9 +67,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------
-2. SIMULADOR
-            ------------------------------------------------------------------ */}
+        {/* 2. SIMULADOR */}
         <section id="simulador" className="relative z-10 py-24">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-4">Simulador Termodinámico</h2>
@@ -117,9 +76,7 @@ export default function Home() {
           <FormularioRecinto />
         </section>
 
-        {/* ------------------------------------------------------------------
-3. NORMATIVAS Y EQUIPOS
-            ------------------------------------------------------------------ */}
+        {/* 3. NORMATIVAS Y EQUIPOS */}
         <section id="normativas" className="relative z-10 py-24 bg-surface-light dark:bg-surface-dark/30 border-y border-slate-200 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -133,13 +90,17 @@ export default function Home() {
                 { icon: Gauge, color: "text-accent-light dark:text-accent-dark", bg: "bg-accent-light/10", title: "3.4 m³/kW", desc: "Volumen mínimo de aire requerido por kilovatio de potencia." },
                 { icon: Waves, color: "text-emerald-500", bg: "bg-emerald-500/10", title: "6 cm²/kW", desc: "Área de ventilación necesaria en recintos confinados." }
               ].map((item, i) => (
-                <div key={i} className="bg-bg-light dark:bg-surface-dark p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-lg flex flex-col items-center text-center group">
+                <motion.div 
+                  key={i} 
+                  whileHover={{ y: -8, scale: 1.03 }}
+                  className="bg-bg-light dark:bg-surface-dark p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-lg flex flex-col items-center text-center group cursor-default"
+                >
                   <div className={`p-4 ${item.bg} rounded-full mb-6 group-hover:scale-110 transition-transform`}>
                     <item.icon className={`w-10 h-10 ${item.color}`} />
                   </div>
                   <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">{item.title}</h3>
                   <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -153,28 +114,24 @@ export default function Home() {
                 { icon: Zap, name: "Estufas Eléctricas" },
                 { icon: Wind, name: "Chimeneas" }
               ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center text-center group">
+                <motion.div key={i} whileHover={{ y: -5, scale: 1.05 }} className="flex flex-col items-center text-center group cursor-default">
                   <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center mb-4 group-hover:bg-accent-light/10 transition-all">
                     <item.icon className="w-8 h-8 text-slate-500 dark:text-slate-400 group-hover:text-accent-light transition-colors" />
                   </div>
                   <h4 className="text-slate-900 dark:text-white font-bold">{item.name}</h4>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------
-4. SOBRE NOSOTROS (ACTUALIZADO CON EL SENA)
-            ------------------------------------------------------------------ */}
+        {/* 4. SOBRE NOSOTROS */}
         <section id="sobre-nosotros" className="relative z-10 py-24 bg-slate-100 dark:bg-[#0f172a] border-b border-slate-200 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
                 <span className="text-primary-light dark:text-primary-dark font-bold tracking-widest uppercase text-sm mb-2 block">Conoce nuestra historia</span>
                 <h2 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-6">Sobre Nosotros</h2>
-                
-                {/* INICIO DEL TEXTO ACTUALIZADO */}
                 <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
                   Somos un equipo de <strong>aprendices de ADSO (Análisis y Desarrollo de Software) del SENA</strong>. Este sitio web nació como un proyecto académico para la clase de Física de nuestro profesor, con el objetivo de aplicar los conceptos teóricos de termodinámica y mecánica de fluidos en una herramienta real y funcional.
                 </p>
@@ -193,13 +150,11 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                {/* FIN DEL TEXTO ACTUALIZADO */}
               </motion.div>
               
-              {/* Imagen grande de Sobre Nosotros */}
               <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10">
                 <img 
-                  src="/images/About.jpeg" // <-- TU IMAGEN LOCAL
+                  src="/images/About.jpeg" 
                   alt="Ingeniería TermoVent" 
                   className="w-full h-full object-cover" 
                 />
@@ -211,9 +166,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------
-            4.5. APLICACIONES PRÁCTICAS
-            ------------------------------------------------------------------ */}
+        {/* 4.5. APLICACIONES PRÁCTICAS */}
         <section id="aplicaciones" className="relative z-10 py-24">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -234,14 +187,15 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }} 
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="bg-surface-light dark:bg-surface-dark rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-lg group"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="bg-surface-light dark:bg-surface-dark rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-lg group cursor-default"
                 >
                   <div className="h-48 overflow-hidden relative">
-                    <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{item.title}</h3>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary-light transition-colors">{item.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </motion.div>
@@ -250,9 +204,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------
-5. CARRUSEL DE RESEÑAS
-            ------------------------------------------------------------------ */}
+        {/* 5. CARRUSEL DE RESEÑAS */}
         <section className="relative z-10 py-24 bg-surface-light dark:bg-black/20 border-y border-slate-200 dark:border-white/5 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 mb-16">
             <div className="text-center">
@@ -260,10 +212,10 @@ export default function Home() {
               <p className="text-slate-500 dark:text-slate-400">Profesionales que confían en nuestros cálculos.</p>
             </div>
           </div>
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative w-full flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative w-full flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] hover:[animation-play-state:paused]">
             <motion.div className="flex gap-6 w-max" animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 30 }}>
               {[...TESTIMONIOS, ...TESTIMONIOS].map((t, i) => (
-                <div key={i} className="w-[350px] flex-shrink-0 bg-bg-light dark:bg-surface-dark p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-lg">
+                <div key={i} className="w-[350px] flex-shrink-0 bg-bg-light dark:bg-surface-dark p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-lg hover:shadow-xl transition-shadow">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 fill-accent-light dark:fill-accent-dark text-accent-light dark:text-accent-dark" />)}
                   </div>
@@ -282,9 +234,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ------------------------------------------------------------------
-6. PREGUNTAS FRECUENTES (FAQ)
-            ------------------------------------------------------------------ */}
+        {/* 6. FAQ */}
         <section id="faq" className="relative z-10 py-24">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -292,24 +242,22 @@ export default function Home() {
             </div>
             <div className="space-y-4">
               {[
-                { q: "¿Qué es un recinto confinado?", a: "Es un espacio cerrado cuyo volumen es menor a 4.8 m³ por cada kW de potencia del equipo instalado." },
+                { q: "¿Qué es un recinto confinado?", a: "Es un espacio cerrado cuyo volumen es menor a 3.4 m³ por cada kW de potencia del equipo instalado." },
                 { q: "¿Por qué es peligroso no tener evacuación de gases?", a: "La combustión genera Monóxido de Carbono (CO). Este es un gas inodoro, incoloro y altamente letal si no se evacua." },
                 { q: "¿Cómo sé si mi rejilla es del tamaño adecuado?", a: "La física de fluidos establece que el área total debe ser de al menos 6 cm² por cada kW. Una estufa de 10 kW requiere mínimo 60 cm²." }
               ].map((faq, i) => (
-                <div key={i} className="bg-surface-light dark:bg-surface-dark/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+                <motion.div whileHover={{ x: 5 }} key={i} className="bg-surface-light dark:bg-surface-dark/50 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
                   <h4 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
                     <Info className="w-5 h-5 text-primary-light dark:text-primary-dark shrink-0" /> {faq.q}
                   </h4>
                   <p className="text-slate-600 dark:text-slate-400 text-sm pl-8 leading-relaxed">{faq.a}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------
-7. CONTACTO Y MAPA
-            ------------------------------------------------------------------ */}
+        {/* 7. CONTACTO Y MAPA */}
         <section id="contacto" className="relative z-10 py-24 bg-surface-light dark:bg-surface-dark/30 border-t border-slate-200 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -359,14 +307,14 @@ export default function Home() {
                   ></iframe>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                   <div className="bg-bg-light dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center gap-4">
+                   <div className="bg-bg-light dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center gap-4 hover:shadow-md transition-shadow">
                      <div className="p-3 bg-primary-light/10 rounded-full text-primary-light"><MapPin className="w-6 h-6" /></div>
                      <div>
                        <h4 className="font-bold text-slate-900 dark:text-white">Ubicación</h4>
                        <p className="text-sm text-slate-500 dark:text-slate-400">Bello, Antioquia</p>
                      </div>
                    </div>
-                   <div className="bg-bg-light dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center gap-4">
+                   <div className="bg-bg-light dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center gap-4 hover:shadow-md transition-shadow">
                      <div className="p-3 bg-accent-light/10 rounded-full text-accent-light"><Phone className="w-6 h-6" /></div>
                      <div>
                        <h4 className="font-bold text-slate-900 dark:text-white">Teléfono</h4>
@@ -379,9 +327,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------
-8. FOOTER PROFESIONAL
-            ------------------------------------------------------------------ */}
+        {/* 8. FOOTER PROFESIONAL */}
         <footer className="relative z-10 bg-slate-900 dark:bg-[#050810] text-slate-300 py-16 border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
             
@@ -443,7 +389,8 @@ export default function Home() {
           </div>
           
           <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-            <p>© {currentYear} TermoVent. Todos los derechos reservados.</p>
+            <p suppressHydrationWarning>© {new Date().getFullYear()} TermoVent. Todos los derechos reservados.</p>
+            <p>Proyecto de Física e Ingeniería - Next.js & FastAPI.</p>
           </div>
         </footer>
       </main>

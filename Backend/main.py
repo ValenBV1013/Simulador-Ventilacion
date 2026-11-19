@@ -23,7 +23,8 @@ class DatosRecinto(BaseModel):
 @app.post("/api/verificar")
 def verificar_recinto(datos: DatosRecinto):
     volumen_m3 = datos.ancho * datos.largo * datos.alto
-    volumen_requerido_m3 = datos.potencia_kw * 4.8
+    # CORRECCIÓN AQUÍ: Ahora es 3.4 m3 por kW
+    volumen_requerido_m3 = datos.potencia_kw * 3.4
     es_confinado = volumen_m3 < volumen_requerido_m3
     
     mensajes = []
@@ -32,7 +33,7 @@ def verificar_recinto(datos: DatosRecinto):
     cumple = True
 
     if es_confinado:
-        alertas.append(f"Recinto CONFINADO. Volumen actual: {volumen_m3:.2f} m³. Mínimo requerido: {volumen_requerido_m3:.2f} m³ (4.8 m³/kW).")
+        alertas.append(f"Recinto CONFINADO. Volumen actual: {volumen_m3:.2f} m³. Mínimo requerido: {volumen_requerido_m3:.2f} m³ (3.4 m³/kW).")
     else:
         mensajes.append(f"Volumen suficiente: {volumen_m3:.2f} m³.")
 
@@ -68,7 +69,6 @@ def verificar_recinto(datos: DatosRecinto):
     else:
         mensajes.append("Sistema de evacuación presente.")
 
-    # Ordenar recomendaciones por ranking (de mejor a peor opción)
     recomendaciones.sort(key=lambda x: x["ranking"])
 
     return {

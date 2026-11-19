@@ -1,6 +1,6 @@
 'use client';
-import { motion } from 'framer-motion';
-import { Wind, Menu } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Wind, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import ThemeToggle from './ThemeToggle';
 
@@ -24,9 +24,11 @@ export default function Header() {
           </span>
         </div>
 
+        {/* Menú de Escritorio */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
           <a href="#simulador" className="hover:text-primary-light dark:hover:text-white transition-colors">Simulador</a>
           <a href="#normativas" className="hover:text-primary-light dark:hover:text-white transition-colors">Normativas</a>
+          <a href="#sobre-nosotros" className="hover:text-primary-light dark:hover:text-white transition-colors">Nosotros</a>
           <a href="#faq" className="hover:text-primary-light dark:hover:text-white transition-colors">FAQ</a>
           <a href="#simulador" className="px-6 py-2.5 rounded-full bg-slate-900 dark:bg-white/10 text-white dark:text-white hover:bg-slate-800 dark:hover:bg-white/20 transition-all">
             Comenzar Análisis
@@ -34,13 +36,38 @@ export default function Header() {
           <ThemeToggle />
         </nav>
 
+        {/* Botón de Menú Móvil y Tema */}
         <div className="flex items-center gap-4 md:hidden">
           <ThemeToggle />
-          <button className="text-slate-900 dark:text-white" onClick={() => setIsOpen(!isOpen)}>
-            <Menu className="w-6 h-6" />
+          <button 
+            className="text-slate-900 dark:text-white p-2" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Abrir menú"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
+
+      {/* Menú Desplegable Móvil Animado */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }} 
+            animate={{ opacity: 1, height: 'auto' }} 
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-bg-light dark:bg-bg-dark border-b border-slate-200 dark:border-white/10 overflow-hidden"
+          >
+            <div className="px-6 py-6 flex flex-col gap-4">
+              <a href="#simulador" onClick={() => setIsOpen(false)} className="text-slate-700 dark:text-slate-300 font-medium hover:text-primary-light dark:hover:text-primary-dark transition-colors">Simulador</a>
+              <a href="#normativas" onClick={() => setIsOpen(false)} className="text-slate-700 dark:text-slate-300 font-medium hover:text-primary-light dark:hover:text-primary-dark transition-colors">Normativas</a>
+              <a href="#sobre-nosotros" onClick={() => setIsOpen(false)} className="text-slate-700 dark:text-slate-300 font-medium hover:text-primary-light dark:hover:text-primary-dark transition-colors">Sobre Nosotros</a>
+              <a href="#faq" onClick={() => setIsOpen(false)} className="text-slate-700 dark:text-slate-300 font-medium hover:text-primary-light dark:hover:text-primary-dark transition-colors">FAQ</a>
+              <a href="#simulador" onClick={() => setIsOpen(false)} className="mt-2 text-center px-6 py-3 rounded-xl bg-primary-light text-white font-bold">Comenzar Análisis</a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

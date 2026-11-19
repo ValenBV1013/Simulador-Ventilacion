@@ -32,9 +32,9 @@ export default function FormularioRecinto() {
     if (!validarFormulario()) { setModalAbierto(true); return; }
     setLoading(true);
     try {
-      // Usa la variable de entorno de Vercel, o localhost si estás en tu PC
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://termovent-api.onrender.com';
-const res = await axios.post(`${apiUrl}/api/verificar`, { ...datos, area_rejillas_cm2: datos.area_rejillas_cm2 === '' ? 0 : datos.area_rejillas_cm2 });
+      // Lógica corregida para Vercel y Local
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await axios.post(`${apiUrl}/api/verificar`, { ...datos, area_rejillas_cm2: datos.area_rejillas_cm2 === '' ? 0 : datos.area_rejillas_cm2 });
       setResultado(res.data);
     } catch (error) {
       console.error("Error", error);
@@ -63,7 +63,13 @@ const res = await axios.post(`${apiUrl}/api/verificar`, { ...datos, area_rejilla
       </AnimatePresence>
 
       <div className="grid lg:grid-cols-2 gap-12 items-start">
-        <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="bg-surface-light dark:bg-surface-dark/50 p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl transition-colors duration-300">
+        
+        {/* Contenedor del Formulario con Efecto 3D Hover */}
+        <motion.div 
+          whileHover={{ y: -5, scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="bg-surface-light dark:bg-surface-dark/50 p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl hover:shadow-2xl transition-all duration-300"
+        >
           <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-6 mb-6">
             <Calculator className="w-8 h-8 text-primary-light dark:text-primary-dark" />
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-wide">Parámetros Físicos</h2>
@@ -98,12 +104,17 @@ const res = await axios.post(`${apiUrl}/api/verificar`, { ...datos, area_rejilla
               <span>¿Tiene ducto o campana de evacuación?</span>
             </label>
           </div>
-          <motion.button onClick={handleVerificar} disabled={loading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full bg-primary-light dark:bg-primary-dark hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-lg transition-all flex justify-center items-center gap-2">
+          <motion.button 
+            onClick={handleVerificar} 
+            disabled={loading} 
+            whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(59,130,246,0.5)" }} 
+            whileTap={{ scale: 0.95 }} 
+            className="w-full bg-primary-light dark:bg-primary-dark text-white py-4 rounded-xl font-bold transition-all flex justify-center items-center gap-2"
+          >
             {loading ? 'Calculando...' : 'Ejecutar Simulación'}
           </motion.button>
         </motion.div>
 
-        {/* Aquí volvemos a poner la casita 2D */}
         <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-6">
           <RecintoAnimado cumple={resultado?.cumple ?? null} tieneEvacuacion={datos.tiene_evacuacion} />
           
@@ -122,7 +133,6 @@ const res = await axios.post(`${apiUrl}/api/verificar`, { ...datos, area_rejilla
         </motion.div>
       </div>
 
-      {/* TARJETAS CON EFECTO SCROLL REVEAL */}
       {resultado && !resultado.cumple && resultado.recomendaciones.length > 0 && (
         <div className="pt-12 border-t border-slate-200 dark:border-white/10">
           <div className="text-center mb-12">
@@ -136,7 +146,15 @@ const res = await axios.post(`${apiUrl}/api/verificar`, { ...datos, area_rejilla
               const borderColor = isEco ? 'border-amber-400/50' : isBal ? 'border-blue-400/50' : 'border-indigo-400/50';
               const badgeColor = isEco ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400' : isBal ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400' : 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400';
               return (
-                <motion.div key={rec.id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.5, delay: index * 0.15 }} whileHover={{ y: -8 }} className={`bg-surface-light dark:bg-surface-dark/50 p-6 rounded-2xl border-2 ${borderColor} shadow-xl flex flex-col h-full relative overflow-hidden group transition-colors`}>
+                <motion.div 
+                  key={rec.id} 
+                  initial={{ opacity: 0, y: 50 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true, margin: "-50px" }} 
+                  transition={{ duration: 0.5, delay: index * 0.15 }} 
+                  whileHover={{ y: -8, scale: 1.02, rotateX: 5, rotateY: -5 }} 
+                  className={`bg-surface-light dark:bg-surface-dark/50 p-6 rounded-2xl border-2 ${borderColor} shadow-xl flex flex-col h-full relative overflow-hidden group hover:shadow-2xl transition-all`}
+                >
                   <div className={`absolute top-0 right-0 px-4 py-1 rounded-bl-lg text-xs font-bold uppercase tracking-wider ${badgeColor}`}>
                     Opción {index + 1} • {isEco ? 'Económica' : isBal ? 'Balanceada' : 'Premium'}
                   </div>
