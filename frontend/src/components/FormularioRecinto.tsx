@@ -32,7 +32,9 @@ export default function FormularioRecinto() {
     if (!validarFormulario()) { setModalAbierto(true); return; }
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:8000/api/verificar', { ...datos, area_rejillas_cm2: datos.area_rejillas_cm2 === '' ? 0 : datos.area_rejillas_cm2 });
+      // Usa la variable de entorno de Vercel, o localhost si estás en tu PC
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://termovent-api.onrender.com';
+const res = await axios.post(`${apiUrl}/api/verificar`, { ...datos, area_rejillas_cm2: datos.area_rejillas_cm2 === '' ? 0 : datos.area_rejillas_cm2 });
       setResultado(res.data);
     } catch (error) {
       console.error("Error", error);

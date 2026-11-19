@@ -130,7 +130,7 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8 mb-20">
               {[
                 { icon: ShieldCheck, color: "text-primary-light dark:text-primary-dark", bg: "bg-primary-light/10", title: "NTC 3631", desc: "Norma técnica que regula la ventilación y evacuación de gases." },
-                { icon: Gauge, color: "text-accent-light dark:text-accent-dark", bg: "bg-accent-light/10", title: "4.8 m³/kW", desc: "Volumen mínimo de aire requerido por kilovatio de potencia." },
+                { icon: Gauge, color: "text-accent-light dark:text-accent-dark", bg: "bg-accent-light/10", title: "3.4 m³/kW", desc: "Volumen mínimo de aire requerido por kilovatio de potencia." },
                 { icon: Waves, color: "text-emerald-500", bg: "bg-emerald-500/10", title: "6 cm²/kW", desc: "Área de ventilación necesaria en recintos confinados." }
               ].map((item, i) => (
                 <div key={i} className="bg-bg-light dark:bg-surface-dark p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-lg flex flex-col items-center text-center group">
