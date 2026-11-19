@@ -18,10 +18,15 @@ const TESTIMONIOS = [
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [currentYear, setCurrentYear] = useState<number>(2026);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
   }, []);
 
   return (
@@ -389,7 +394,7 @@ export default function Home() {
           </div>
           
           <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-            <p suppressHydrationWarning>© {new Date().getFullYear()} TermoVent. Todos los derechos reservados.</p>
+            <p suppressHydrationWarning>© {currentYear} TermoVent. Todos los derechos reservados.</p>
             <p>Proyecto de Física e Ingeniería - Next.js & FastAPI.</p>
           </div>
         </footer>
