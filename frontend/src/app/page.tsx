@@ -44,11 +44,17 @@ const TESTIMONIOS = [
 export default function Home() {
   // Estado para el Loader inicial
   const [loading, setLoading] = useState(true);
+  // Estado para el año actual sin romper el prerrender con cacheComponents
+  const [currentYear, setCurrentYear] = useState<number>(2026);
 
   // Simulamos una carga de 1.5 segundos al entrar
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
   }, []);
 
   return (
@@ -74,7 +80,7 @@ export default function Home() {
         <Header />
 
         {/* ------------------------------------------------------------------
-            1. HERO SECTION
+1. HERO SECTION
             ------------------------------------------------------------------ */}
         <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center justify-center z-10">
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center opacity-10 dark:opacity-20 mix-blend-luminosity" />
@@ -101,7 +107,7 @@ export default function Home() {
         </section>
 
         {/* ------------------------------------------------------------------
-            2. SIMULADOR
+2. SIMULADOR
             ------------------------------------------------------------------ */}
         <section id="simulador" className="relative z-10 py-24">
           <div className="text-center mb-12">
@@ -112,7 +118,7 @@ export default function Home() {
         </section>
 
         {/* ------------------------------------------------------------------
-            3. NORMATIVAS Y EQUIPOS
+3. NORMATIVAS Y EQUIPOS
             ------------------------------------------------------------------ */}
         <section id="normativas" className="relative z-10 py-24 bg-surface-light dark:bg-surface-dark/30 border-y border-slate-200 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
@@ -159,7 +165,7 @@ export default function Home() {
         </section>
 
         {/* ------------------------------------------------------------------
-            4. SOBRE NOSOTROS (ACTUALIZADO CON EL SENA)
+4. SOBRE NOSOTROS (ACTUALIZADO CON EL SENA)
             ------------------------------------------------------------------ */}
         <section id="sobre-nosotros" className="relative z-10 py-24 bg-slate-100 dark:bg-[#0f172a] border-b border-slate-200 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
@@ -245,7 +251,7 @@ export default function Home() {
         </section>
 
         {/* ------------------------------------------------------------------
-            5. CARRUSEL DE RESEÑAS
+5. CARRUSEL DE RESEÑAS
             ------------------------------------------------------------------ */}
         <section className="relative z-10 py-24 bg-surface-light dark:bg-black/20 border-y border-slate-200 dark:border-white/5 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 mb-16">
@@ -277,7 +283,7 @@ export default function Home() {
         </section>
 
         {/* ------------------------------------------------------------------
-            6. PREGUNTAS FRECUENTES (FAQ)
+6. PREGUNTAS FRECUENTES (FAQ)
             ------------------------------------------------------------------ */}
         <section id="faq" className="relative z-10 py-24">
           <div className="max-w-4xl mx-auto px-6">
@@ -302,7 +308,7 @@ export default function Home() {
         </section>
 
         {/* ------------------------------------------------------------------
-            7. CONTACTO Y MAPA
+7. CONTACTO Y MAPA
             ------------------------------------------------------------------ */}
         <section id="contacto" className="relative z-10 py-24 bg-surface-light dark:bg-surface-dark/30 border-t border-slate-200 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
@@ -374,7 +380,7 @@ export default function Home() {
         </section>
 
         {/* ------------------------------------------------------------------
-            8. FOOTER PROFESIONAL
+8. FOOTER PROFESIONAL
             ------------------------------------------------------------------ */}
         <footer className="relative z-10 bg-slate-900 dark:bg-[#050810] text-slate-300 py-16 border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
@@ -437,8 +443,7 @@ export default function Home() {
           </div>
           
           <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-            <p>© {new Date().getFullYear()} TermoVent. Todos los derechos reservados.</p>
-            <p suppressHydrationWarning>© {new Date().getFullYear()} TermoVent. Todos los derechos reservados.</p>
+            <p>© {currentYear} TermoVent. Todos los derechos reservados.</p>
           </div>
         </footer>
       </main>
